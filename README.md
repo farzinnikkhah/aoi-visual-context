@@ -6,6 +6,7 @@ The repository is code only. It does not include participant video, gaze tables,
 
 ## What each part does
 
+- `extract_full_frames_local.ipynb` turns each participant's Tobii scene video into frames, aligns every frame to the nearest gaze-table row, and renames the frames so the Tobii timestamp is in the filename. It runs on the machine that holds the videos and needs OpenCV. Its output folder is the `AOI_full_frame_output` tree that every later script reads.
 - `run_full_frame_groundingdino.py` runs the zero-shot detector on every usable frame and merges highly overlapping boxes of the same class (`box_merge.py`).
 - `human_validation/` draws a stratified annotation sample, builds the train and test JSON, and fine-tunes Grounding DINO. The image backbone and text encoder stay frozen. The class list is `human_validation/finetune/data/classes.json`. The annotation rules are in `human_validation/ANNOTATION_PROTOCOL.md`.
 - `run_full_frame_finetuned.py` runs the fine-tuned checkpoint on the corpus. Storefront uses a score cutoff of 0.20. Every other class uses 0.30.
@@ -30,6 +31,8 @@ export AOI_STUDY_ROOT=/path/to/AOI
 ```
 
 `AOI_STUDY_ROOT` is only needed for the original Tobii tables under `seperate_excels/Separate_excels`.
+
+`opencv-python` is only needed for the frame-extraction notebook.
 
 The public starting checkpoint is `IDEA-Research/grounding-dino-base`. A fine-tuned run is loaded from:
 

@@ -5,3 +5,4 @@ torch
 torchvision
 transformers
 tqdm
+opencv-python

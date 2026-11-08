@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Ingest IlyasHarris pack_c annotations into an augmented train split.
+"""Ingest the pack C annotations (one annotator) into an augmented train split.
 
 Keeps original train/test/pilot.json untouched. Writes:
   finetune/data/train_plus_pack_c.json
@@ -17,7 +17,9 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 HV = HERE.parent
 DATA = HERE / "data"
-ZIP = HV / "IlyasHarris_pack_c_annotations.zip"
+# LabelMe/AnyLabeling export for pack C. Any "*pack_c_annotations.zip" in
+# human_validation/ is accepted; only the .json entries inside are read.
+ZIP = next(iter(sorted(HV.glob("*pack_c_annotations.zip"))), HV / "pack_c_annotations.zip")
 MANIFEST = HV / "batch_c" / "manifest.csv"
 
 CLASSES = json.loads((DATA / "classes.json").read_text())
